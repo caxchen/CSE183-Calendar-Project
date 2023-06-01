@@ -23,8 +23,8 @@ def get_time():
 db.define_table(
     'event',
     Field('name', requires=IS_NOT_EMPTY()),
-    Field('event_time', 'datetime', default=get_time(), requires=(IS_NOT_EMPTY(),IS_DATETIME())),
-    Field('description')
+    Field('event_time', 'datetime', default=get_time(), requires=(IS_NOT_EMPTY(), IS_DATETIME())),
+    Field('description', 'text')
 )
 
 db.event.id.readable = db.event.id.writable = False

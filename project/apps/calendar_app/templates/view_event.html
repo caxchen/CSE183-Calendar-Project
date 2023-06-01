@@ -8,14 +8,17 @@
     </div>
     <div class="block">
     <h1 class="title">Time</h1>
-    <div>[[=event.time]]</div>
+    <div>[[=event.event_time]]</div>
     </div>
     <div class="block">
     <h1 class="title">Event Description</h1>
     <div>[[=event.description]]</div>
     </div>
     <a class="button is-link" href="[[=URL('edit_event', event.id)]]">
-        <span>Edit</span>
+        <span>Edit This Event</span>
+    </a>
+    <a class="button is-danger" href="[[=URL('delete_event', event.id)]]">
+        <span>Delete This Event</span>
     </a>
     [[pass]]
 </div>

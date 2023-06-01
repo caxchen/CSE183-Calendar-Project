@@ -70,3 +70,13 @@ def view_event(id=None):
         redirect(URL('index'))
     rows = db(db.event.id == id).select()
     return dict(events=rows)
+
+@action('delete_event/<id:int>')
+@action.uses(db, session, auth.user)
+def delete_event(id=None):
+    assert id is not None
+    event_id = db.event[id]
+    if event_id is None:
+        redirect(URL('index'))
+    db(db.event.id == id).delete()
+    redirect(URL('index'))
