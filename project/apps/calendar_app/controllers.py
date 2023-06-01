@@ -60,3 +60,13 @@ def edit_event(id=None):
     if form.accepted:
         redirect(URL('index'))
     return dict(form=form)
+
+@action('view_event/<id:int>', method=["GET", "POST"])
+@action.uses('view_event.html', db, session, auth.user)
+def view_event(id=None):
+    assert id is not None
+    edit_event = db.event[id]
+    if edit_event is None:
+        redirect(URL('index'))
+    rows = db(db.event.id == id).select()
+    return dict(events=rows)

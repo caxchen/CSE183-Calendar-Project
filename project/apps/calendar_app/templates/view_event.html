@@ -1,0 +1,21 @@
+[[extend 'layout.html']]
+
+<div class="section">
+    [[for event in events:]]
+    <div class="block">
+    <h1 class="title">Event Name</h1>
+        <div>[[=event.name]]</div>
+    </div>
+    <div class="block">
+    <h1 class="title">Time</h1>
+    <div>[[=event.time]]</div>
+    </div>
+    <div class="block">
+    <h1 class="title">Event Description</h1>
+    <div>[[=event.description]]</div>
+    </div>
+    <a class="button is-link" href="[[=URL('edit_event', event.id)]]">
+        <span>Edit</span>
+    </a>
+    [[pass]]
+</div>
