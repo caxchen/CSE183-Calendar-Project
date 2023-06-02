@@ -29,3 +29,23 @@ CREATE TABLE "py4web_session"(
     "expires_on" TIMESTAMP
 );
 success!
+success!
+timestamp: 2023-06-01T18:34:28.687365
+CREATE TABLE "event2"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "name" CHAR(512),
+    "event_time" TIMESTAMP,
+    "description" TEXT
+);
+success!
+timestamp: 2023-06-01T20:28:34.488047
+ALTER TABLE "event2" ADD "user_id" CHAR(512);
+success!
+timestamp: 2023-06-01T20:33:43.993811
+ALTER TABLE "event2" ADD "user" CHAR(512);
+success!
+success!
+success!
+success!
+success!
+success!

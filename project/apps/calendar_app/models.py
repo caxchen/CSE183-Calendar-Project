@@ -27,6 +27,14 @@ db.define_table(
     Field('description', 'text')
 )
 
+db.define_table(
+    'event2',
+    Field('name', requires=IS_NOT_EMPTY()),
+    Field('event_time', 'datetime', default=get_time(), requires=(IS_NOT_EMPTY(), IS_DATETIME())),
+    Field('description', 'text'),
+    Field('user', 'string')
+)
+
 db.event.id.readable = db.event.id.writable = False
 
 #

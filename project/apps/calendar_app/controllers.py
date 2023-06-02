@@ -32,18 +32,21 @@ from py4web.utils.url_signer import URLSigner
 from py4web.utils.form import Form, FormStyleBulma
 
 
+# we can get the currently logged in user with this:
+# auth.get_user()['username']
+
 @action("index")
 @action.uses("index.html", auth.user, T)
 def index():
     user = auth.get_user()
     message = T("{first_name}'s calendar".format(**user) if user else "Hello")
     actions = {"allowed_actions": auth.param.allowed_actions}
-    return dict(message=message, actions=actions)
+    return dict(message=message, actions=actions, events="testval")
 
 @action("create_event", method=["GET", "POST"])
 @action.uses("create_event.html", db, session, auth.user)
 def create_event():
-    form = Form(db.event, csrf_session=session, formstyle=FormStyleBulma)
+    form = Form(db.event2, csrf_session=session, formstyle=FormStyleBulma)
     if form.accepted:
         redirect(URL('index'))
     return dict(form=form)
@@ -80,3 +83,11 @@ def delete_event(id=None):
         redirect(URL('index'))
     db(db.event.id == id).delete()
     redirect(URL('index'))
+
+# made this to get events to put into the fullCalendar
+@action("get_events", method=["GET"])
+@action.uses(db, session, auth.user)
+def get_events():
+    username = auth.get_user()['username']
+    events = db(db.event2.user == username).select()
+    return dict(events=events)
