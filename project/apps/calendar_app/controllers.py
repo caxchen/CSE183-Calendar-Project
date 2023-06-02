@@ -88,6 +88,6 @@ def delete_event(id=None):
 @action("get_events", method=["GET"])
 @action.uses(db, session, auth.user)
 def get_events():
-    username = auth.get_user()['username']
-    events = db(db.event2.user == username).select()
+    username = auth.get_user()['id']
+    events = db(db.event2.created_by == username).select()
     return dict(events=events)
