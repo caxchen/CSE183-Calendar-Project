@@ -39,7 +39,7 @@ from py4web.utils.form import Form, FormStyleBulma
 @action.uses("index.html", auth.user, T)
 def index():
     user = auth.get_user()
-    message = T("{first_name}'s calendar".format(**user) if user else "Hello")
+    message = T("{first_name}'s Calendar".format(**user) if user else "Hello")
     actions = {"allowed_actions": auth.param.allowed_actions}
     return dict(message=message, actions=actions, events="testval")
 

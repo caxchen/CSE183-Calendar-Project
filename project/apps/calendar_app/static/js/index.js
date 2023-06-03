@@ -1,6 +1,7 @@
 let app = {}
 
 
+
 function main() {
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -9,6 +10,25 @@ function main() {
           initialView: 'dayGridMonth', //dayGridDay
           eventClick: function(info) {
             window.location.href =`../view_event/${info.event.id}`;
+          },
+          dateClick: function(info) {
+            //console.log(info.dateStr);
+            //console.log(info.jsEvent.pageX, info.jsEvent.pageY);
+            //console.log(info.view.type)
+            calendar.changeView('dayGridDay', info.dateStr);
+          },
+          customButtons: {
+            testButton1: {
+                text: "Month View",
+                click: function() {
+                    calendar.changeView('dayGridMonth');
+                }
+            }
+          },
+          headerToolbar: {
+            left: 'prev,next today testButton1',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
           }
           
         });
@@ -31,9 +51,16 @@ function main() {
                         }
                     })
                 }
+                calendar.render();
             }
         });
     });
 }
 
 main();
+
+function back() {
+    //console.log("back");
+    var calendarEl = document.getElementById('calendar').Calendar;
+    console.log(calendarEl);
+}
