@@ -29,6 +29,10 @@ db.define_table(
 )
 
 db.event.id.readable = db.event.id.writable = False
+db.event.created_on.readable = db.event.created_on.writable = False
+db.event.created_by.readable = db.event.created_by.writable = False
+db.event.modified_on.readable =  False
+db.event.modified_by.readable = False
 
 #
 ## always commit your models to avoid problems later
