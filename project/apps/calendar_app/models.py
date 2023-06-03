@@ -24,13 +24,6 @@ db.define_table(
     'event',
     Field('name', requires=IS_NOT_EMPTY()),
     Field('event_time', 'datetime', default=get_time(), requires=(IS_NOT_EMPTY(), IS_DATETIME())),
-    Field('description', 'text')
-)
-
-db.define_table(
-    'event2',
-    Field('name', requires=IS_NOT_EMPTY()),
-    Field('event_time', 'datetime', default=get_time(), requires=(IS_NOT_EMPTY(), IS_DATETIME())),
     Field('description', 'text'),
     auth.signature,
 )

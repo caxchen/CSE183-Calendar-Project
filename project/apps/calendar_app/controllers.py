@@ -46,7 +46,7 @@ def index():
 @action("create_event", method=["GET", "POST"])
 @action.uses("create_event.html", db, session, auth.user)
 def create_event():
-    form = Form(db.event2, csrf_session=session, formstyle=FormStyleBulma)
+    form = Form(db.event, csrf_session=session, formstyle=FormStyleBulma)
     if form.accepted:
         redirect(URL('index'))
     return dict(form=form)
@@ -89,5 +89,5 @@ def delete_event(id=None):
 @action.uses(db, session, auth.user)
 def get_events():
     username = auth.get_user()['id']
-    events = db(db.event2.created_by == username).select()
+    events = db(db.event.created_by == username).select()
     return dict(events=events)
