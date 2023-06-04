@@ -7,13 +7,13 @@ Class: CSE 183, Spring 2023
 
 Casey Chen | caxchen@ucsc.edu
 
-bamontgo@ucsc.edu
+Bryce Montgomery | bamontgo@ucsc.edu
 
-dhsieh4@ucsc.edu
+Daniel Hsieh | dhsieh4@ucsc.edu
 
 Sydney DeHaro | sdeharo@ucsc.edu
 
-sukausha@ucsc.edu
+Summit Kaushal | sukausha@ucsc.edu
 
 ## Description
 This app will display a calendar, with the ability to add events to each of its days. Its objective is to allow the user to more easily keep track of the dates and times of events in their life. It will include a login page, a month view page, a day’s events page, an event creation page, and an event details page. It will store user login information, user calendar data, and calendar event data. Users will be able to create an account, access their own calendar, view the scheduled events for the day/week/month, and look at their scheduled events in detail. They will also be able to create/update/delete event details as needed.
