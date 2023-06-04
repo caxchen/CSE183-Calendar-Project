@@ -26,7 +26,7 @@ function main() {
             }
           },
           headerToolbar: {
-            left: 'prev,next today testButton1',
+            left: 'prev,next today',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
           }
