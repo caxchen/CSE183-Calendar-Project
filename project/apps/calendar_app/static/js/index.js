@@ -15,7 +15,7 @@ function main() {
             //console.log(info.dateStr);
             //console.log(info.jsEvent.pageX, info.jsEvent.pageY);
             //console.log(info.view.type)
-            calendar.changeView('dayGridDay', info.dateStr);
+            calendar.changeView('timeGridDay', info.dateStr);
           },
           customButtons: {
             testButton1: {
