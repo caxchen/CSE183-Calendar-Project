@@ -23,12 +23,18 @@ function main() {
                 click: function() {
                     calendar.changeView('dayGridMonth');
                 }
+            },
+            MultiMonthView: {
+              text: 'Multiple Month',
+              click: function() {
+                 calendar.changeView('multiMonthYear')
+              }
             }
           },
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,multiMonthYear'
           }
           
         });
