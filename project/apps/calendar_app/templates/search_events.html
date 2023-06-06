@@ -1,0 +1,35 @@
+[[extend 'layout.html']]
+
+<div class="section mx-6" id="vue" v-cloak>
+
+    <div class="block">
+        <a class="button is-primary" href="[[=URL('index')]]">
+            <span>Back</span>
+        </a>
+    </div>
+
+    <div class="block">
+        <h1 class="title">Search Your Events</h1>
+    </div>
+    
+    <div class="field">
+        <p class="control has-icons-right">
+            <input class="input" v-model="text" v-on:keyup="filter_events()" placeholder="Search events by name...">
+        </p>
+    </div>
+
+    <div class="block" v-if="text.length>0" v-for="event in events">
+            <a v-bind:href="'/calendar_app/view_event/'+event.id">{{event.name}}</a>
+        
+    </div>
+    <div class="block" v-if="text.length==0" v-for="event in events">
+        <a v-bind:href="'/calendar_app/view_event/'+event.id">{{event.name}}</a>
+    </div>
+    
+</div>
+
+[[block page_scripts]]
+<!-- Loads the index-specific js for Vue -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
+<script src="js/search.js"></script>
+[[end]]

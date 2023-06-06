@@ -31,13 +31,17 @@ from .common import db, session, T, cache, auth, logger, authenticated, unauthen
 from py4web.utils.url_signer import URLSigner
 from py4web.utils.form import Form, FormStyleBulma
 
+
+# we can get the currently logged in user with this:
+# auth.get_user()['username']
+
 @action("index")
 @action.uses("index.html", auth.user, T)
 def index():
     user = auth.get_user()
     message = T("{first_name}'s Calendar".format(**user) if user else "Hello")
     actions = {"allowed_actions": auth.param.allowed_actions}
-    return dict(message=message, actions=actions)
+    return dict(message=message, actions=actions, events="testval")
 
 @action("create_event", method=["GET", "POST"])
 @action.uses("create_event.html", db, session, auth.user)
@@ -52,6 +56,7 @@ def create_event():
 def edit_event(id=None):
     assert id is not None
     edit_event = db.event[id]
+    # if edit_event.created_by != auth.user(): raise HTTP(400)
     if edit_event is None:
         redirect(URL('index'))
     form = Form(db.event, record=edit_event, deletable=False, csrf_session=session, formstyle=FormStyleBulma)
@@ -79,10 +84,19 @@ def delete_event(id=None):
     db(db.event.id == id).delete()
     redirect(URL('index'))
 
+@action("search_events", method=["GET"])
+@action.uses('search_events.html', db, session, auth.user)
+def search_events():
+    username = auth.get_user()['id']
+    text = request.GET.get("text", "")
+    events = db(db.event.created_by == username).select()
+    return dict(events=events)
+    
 # made this to get events to put into the fullCalendar
 @action("get_events", method=["GET"])
 @action.uses(db, session, auth.user)
 def get_events():
     username = auth.get_user()['id']
-    events = db(db.event.created_by == username).select()
+    text = request.GET.get("text", "")
+    events = db((db.event.name.contains(text)) & (db.event.created_by == username)).select()
     return dict(events=events)
