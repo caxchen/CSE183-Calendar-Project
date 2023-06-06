@@ -31,17 +31,13 @@ from .common import db, session, T, cache, auth, logger, authenticated, unauthen
 from py4web.utils.url_signer import URLSigner
 from py4web.utils.form import Form, FormStyleBulma
 
-
-# we can get the currently logged in user with this:
-# auth.get_user()['username']
-
 @action("index")
 @action.uses("index.html", auth.user, T)
 def index():
     user = auth.get_user()
     message = T("{first_name}'s Calendar".format(**user) if user else "Hello")
     actions = {"allowed_actions": auth.param.allowed_actions}
-    return dict(message=message, actions=actions, events="testval")
+    return dict(message=message, actions=actions)
 
 @action("create_event", method=["GET", "POST"])
 @action.uses("create_event.html", db, session, auth.user)
@@ -56,7 +52,6 @@ def create_event():
 def edit_event(id=None):
     assert id is not None
     edit_event = db.event[id]
-    # if edit_event.created_by != auth.user(): raise HTTP(400)
     if edit_event is None:
         redirect(URL('index'))
     form = Form(db.event, record=edit_event, deletable=False, csrf_session=session, formstyle=FormStyleBulma)

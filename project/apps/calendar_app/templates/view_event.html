@@ -8,8 +8,12 @@
     </div>
     <div class="block">
     <h1 class="title">Time</h1>
-    <div>[[=event.event_time]]</div>
+    [[ if event.all_day == False: ]]
+        <div>[[=event.event_time]]</div>
+    [[ else: ]]
+        <div>All-day</div>
     </div>
+    [[ pass ]]
     <div class="block">
     <h1 class="title">Event Description</h1>
     <div>[[=event.description]]</div>
