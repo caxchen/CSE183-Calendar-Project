@@ -14,7 +14,7 @@ def get_username():
     return auth.current_user.get('username') if auth.current_user else None
 
 def get_time():
-    return datetime.datetime.utcnow()
+    return datetime.datetime.now()
 
 # Event table defined here
 db.define_table(

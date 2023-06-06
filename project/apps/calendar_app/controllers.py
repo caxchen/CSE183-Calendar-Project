@@ -41,7 +41,7 @@ def index():
     user = auth.get_user()
     message = T("{first_name}'s Calendar".format(**user) if user else "Hello")
     actions = {"allowed_actions": auth.param.allowed_actions}
-    return dict(message=message, actions=actions, events="testval")
+    return dict(message=message, actions=actions)
 
 @action("create_event", method=["GET", "POST"])
 @action.uses("create_event.html", db, session, auth.user)
