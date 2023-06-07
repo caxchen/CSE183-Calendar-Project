@@ -25,6 +25,16 @@ db.define_table(
     Field('all_day', 'boolean', default=False),
     auth.signature,
 )
+db.define_table(
+    'venue',
+    Field('Venue Name', requires=IS_NOT_EMPTY()),
+    Field('Address', requires=IS_NOT_EMPTY()),
+    Field('City', requires=IS_NOT_EMPTY()),
+    Field('State', requires=IS_NOT_EMPTY()),
+    Field('Capacity',requires=IS_NOT_EMPTY()),
+    Field('Contact info', requires=IS_NOT_EMPTY()),
+    auth.signature
+)
 
 # Change readable/writable permissions
 db.event.id.readable = db.event.id.writable = False
