@@ -15,6 +15,9 @@
     <div class="field">
         <p class="control has-icons-right">
             <input class="input" v-model="text" v-on:keyup="filter_events()" placeholder="Search events by name...">
+            <span class="icon is-small is-right is-clickable">
+                <i class="fa fa-times-circle" v-on:click="clear()"></i>
+            </span>
         </p>
     </div>
 
