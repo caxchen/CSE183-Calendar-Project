@@ -154,3 +154,57 @@ def search_events():
     request.GET.get("text", "")
     venues = db(db.venue).select()
     return dict(venues=venues)
+
+
+### category ###
+@action("create_category", method=["GET", "POST"])
+@action.uses("create_category.html", db, session, auth.user)
+def create_category():
+    form = Form(db.category, fields=['category_name', 'color'], csrf_session=session, formstyle=FormStyleBulma)
+    category_name = ''
+    color = ''
+    if form.accepted:
+        category_name = form.vars.category_name if form.vars else ''
+        #retrieves selected color
+        color = request.vars.color if 'color' in request.vars else ''
+        redirect(URL('index'))
+
+    categories = db(db.category).select()
+    return dict(form=form, category_name=category_name, color=color, categories=categories)
+
+@action('edit_category/<id:int>', method=["GET", "POST"])
+@action.uses('edit_category.html', db, session, auth.user)
+def edit_category(id=None):
+    assert id is not None
+    edit_category = db.category[id]
+    if edit_category is None:
+        redirect(URL('index'))
+    form = Form(db.category, fields=['category_name', 'category_description', 'color'], record=edit_category, deletable=False, csrf_session=session, formstyle=FormStyleBulma)
+    if form.accepted:
+        redirect(URL('view_category', id))
+    return dict(form=form)
+
+@action('view_category/<id:int>', method=["GET", "POST"])
+@action.uses('view_category.html', db, session, auth.user)
+def view_category(id=None):
+    assert id is not None
+    view_category = db.category[id]
+    if view_category is None:
+        redirect(URL('index'))
+    rows = db(db.category.id == id).select()
+    return dict(cat=rows)
+
+@action('delete_category/<id:int>')
+@action.uses(db, session, auth.user)
+def delete_category(id=None):
+    assert id is not None
+    category_id = db.category[id]
+    if category_id is None:
+        redirect(URL('index'))
+    db(db.category.id == id).delete()
+    redirect(URL('index'))
+
+
+
+
+

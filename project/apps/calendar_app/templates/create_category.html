@@ -1,0 +1,28 @@
+[[extend 'layout.html']]
+
+<div class="section">
+    <h1 class="title">Create new Category</h1>
+    <form action="{{=URL('create_category')}}" method="post">
+        <div class="field">
+            <label class="label">Category Name</label>
+            <div class="control">
+                <input class="input" type="text" name="category_name">
+            </div>
+        </div>
+        
+        <div class="field">
+            <label class="label">Color</label>
+            <div class="control">
+                <input class="input" type="color" name="color">
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="control">
+                <input class="button is-success" type="submit">
+            </div>
+        </div>
+ 
+    </form>
+
+</div>

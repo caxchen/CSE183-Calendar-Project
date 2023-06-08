@@ -32,6 +32,7 @@ db.define_table(
 # Event table defined here
 db.define_table(
     'event',
+    #Field('category_id', db.category, requires=IS_IN_DB(db, 'category.id', '%(category_name)s', zero='Select category')),
     Field('venue_id', db.venue, requires=IS_IN_DB(db, 'venue.id', '%(venue_name)s', zero='Select Venue')),
     Field('name', requires=IS_NOT_EMPTY()),
     Field('event_time', 'datetime', default=get_time(), requires=(IS_NOT_EMPTY(), IS_DATETIME())),
@@ -39,6 +40,19 @@ db.define_table(
     Field('all_day', 'boolean', default=False),
     auth.signature,
 )
+db.define_table(
+    'category',
+    Field('category_name', 'string', required=True, requires=IS_NOT_EMPTY),
+    Field('color', 'string', required=True),
+    auth.signature,
+)
+
+# Change readable/writable permissions for category table
+db.category.id.readable = db.category.id.writable = False
+db.category.created_on.readable = db.category.created_on.writable = False
+db.category.created_by.readable = db.category.created_by.writable = False
+db.category.modified_on.readable =  False
+db.category.modified_by.readable = False
 
 # Change readable/writable permissions for venue table
 db.venue.id.readable = db.venue.id.writable = False
