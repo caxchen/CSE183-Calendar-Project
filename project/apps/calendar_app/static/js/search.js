@@ -26,6 +26,9 @@ function init() {
           }).catch(function(error) {
             console.error("Error fetching events:", error)});
         }
+        else {
+            self.methods.clear();
+        }
     };
 
     // Clear function
