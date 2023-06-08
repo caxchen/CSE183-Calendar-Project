@@ -27,12 +27,13 @@ db.define_table(
 )
 db.define_table(
     'venue',
-    Field('Venue Name', requires=IS_NOT_EMPTY()),
-    Field('Address', requires=IS_NOT_EMPTY()),
-    Field('City', requires=IS_NOT_EMPTY()),
-    Field('State', requires=IS_NOT_EMPTY()),
-    Field('Capacity',requires=IS_NOT_EMPTY()),
-    Field('Contact info', requires=IS_NOT_EMPTY()),
+    Field('venue_id', 'reference event'),
+    Field('venue_name', requires=IS_NOT_EMPTY()),
+    Field('address', requires=IS_NOT_EMPTY()),
+    Field('city', requires=IS_NOT_EMPTY()),
+    Field('state', requires=IS_NOT_EMPTY()),
+    Field('capacity',requires=IS_NOT_EMPTY()),
+    Field('contact_info', requires=IS_NOT_EMPTY()),
     auth.signature
 )
 

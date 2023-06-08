@@ -31,10 +31,6 @@ from .common import db, session, T, cache, auth, logger, authenticated, unauthen
 from py4web.utils.url_signer import URLSigner
 from py4web.utils.form import Form, FormStyleBulma
 
-
-# we can get the currently logged in user with this:
-# auth.get_user()['username']
-
 @action("index")
 @action.uses("index.html", auth.user, T)
 def index():
@@ -88,7 +84,7 @@ def delete_event(id=None):
 @action.uses('search_events.html', db, session, auth.user)
 def search_events():
     username = auth.get_user()['id']
-    text = request.GET.get("text", "")
+    request.GET.get("text", "")
     events = db(db.event.created_by == username).select()
     return dict(events=events)
     
