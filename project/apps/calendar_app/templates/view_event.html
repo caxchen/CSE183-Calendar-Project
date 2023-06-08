@@ -18,6 +18,13 @@
     <h1 class="title">Event Description</h1>
     <div>[[=event.description]]</div>
     </div>
+    <div class="block">
+        <h1 class="title">Event Venue</h1>
+        <div>[[=event.venue_id]]</div>
+    </div>
+    <a class="button is-warning" href="[[=URL('view_venue', event.venue_id)]]">
+        <span>See Venue</span>
+    </a>
     <a class="button is-link" href="[[=URL('edit_event', event.id)]]">
         <span>Edit This Event</span>
     </a>

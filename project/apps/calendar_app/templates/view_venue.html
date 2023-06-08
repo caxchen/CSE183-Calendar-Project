@@ -1,0 +1,32 @@
+[[extend 'layout.html']]
+
+<div class="section">
+    [[for venue in venues:]]
+    <div class="block">
+    <h1 class="title">Venue Name</h1>
+        <div>[[=venue.venue_name]]</div>
+    </div>
+    <div class="block">
+        <h1 class="title">Contact Info</h1>
+            <div>[[=venue.contact_info]]</div>
+        </div>
+    <div class="block">
+        <h1 class="title">Address</h1>
+        <div>[[=venue.address]]</div>
+        <div>[[=venue.city]], [[=venue.state]] [[=venue.zip_code]]</div>
+        </div>
+    <div class="block">
+    <h1 class="title">Capacity</h1>
+    <div>[[=venue.capacity]]</div>
+    </div>
+    <a class="button is-link" href="[[=URL('edit_venue', venue.id)]]">
+        <span>Edit This Venue</span>
+    </a>
+    <a class="button is-danger" href="[[=URL('delete_venue', venue.id)]]">
+        <span>Delete This Venue</span>
+    </a>
+    <a class="button is-success" href="[[=URL('index')]]">
+        <span>Back</span>
+    </a>
+    [[pass]]
+</div>

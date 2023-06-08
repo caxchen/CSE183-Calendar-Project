@@ -16,28 +16,39 @@ def get_username():
 def get_time():
     return datetime.datetime.now()
 
+# Venue table defined here 
+db.define_table(
+    'venue',
+    Field('venue_name', requires=IS_NOT_EMPTY()),
+    Field('contact_info', requires=IS_NOT_EMPTY()),
+    Field('address', requires=IS_NOT_EMPTY()),
+    Field('city', requires=IS_NOT_EMPTY()),
+    Field('state', requires=IS_NOT_EMPTY()),
+    Field('zip_code', 'integer', requires=IS_NOT_EMPTY()),
+    Field('capacity', 'integer', requires=IS_NOT_EMPTY()),
+    auth.signature
+)
+
 # Event table defined here
 db.define_table(
     'event',
+    Field('venue_id', db.venue, requires=IS_IN_DB(db, 'venue.id', '%(venue_name)s', zero='Select Venue')),
     Field('name', requires=IS_NOT_EMPTY()),
     Field('event_time', 'datetime', default=get_time(), requires=(IS_NOT_EMPTY(), IS_DATETIME())),
     Field('description', 'text'),
     Field('all_day', 'boolean', default=False),
     auth.signature,
 )
-db.define_table(
-    'venue',
-    Field('venue_id', 'reference event'),
-    Field('venue_name', requires=IS_NOT_EMPTY()),
-    Field('address', requires=IS_NOT_EMPTY()),
-    Field('city', requires=IS_NOT_EMPTY()),
-    Field('state', requires=IS_NOT_EMPTY()),
-    Field('capacity',requires=IS_NOT_EMPTY()),
-    Field('contact_info', requires=IS_NOT_EMPTY()),
-    auth.signature
-)
 
-# Change readable/writable permissions
+# Change readable/writable permissions for venue table
+db.venue.id.readable = db.venue.id.writable = False
+db.venue.created_on.readable = db.venue.created_on.writable = False
+db.venue.created_by.readable = db.venue.created_by.writable = False
+db.venue.modified_on.readable =  False
+db.venue.modified_by.readable = False
+
+# Change readable/writable permissions for event table
+db.event.venue_id.readable = False
 db.event.id.readable = db.event.id.writable = False
 db.event.created_on.readable = db.event.created_on.writable = False
 db.event.created_by.readable = db.event.created_by.writable = False

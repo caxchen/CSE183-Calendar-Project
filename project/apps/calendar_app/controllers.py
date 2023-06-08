@@ -47,6 +47,14 @@ def create_event():
         redirect(URL('index'))
     return dict(form=form)
 
+@action("create_venue", method=["GET", "POST"])
+@action.uses("create_venue.html", db, session, auth.user)
+def create_event():
+    form = Form(db.venue, csrf_session=session, formstyle=FormStyleBulma)
+    if form.accepted:
+        redirect(URL('index'))
+    return dict(form=form)
+
 @action('edit_event/<id:int>', method=["GET", "POST"])
 @action.uses('edit_event.html', db, session, auth.user)
 def edit_event(id=None):
@@ -57,7 +65,20 @@ def edit_event(id=None):
         redirect(URL('index'))
     form = Form(db.event, record=edit_event, deletable=False, csrf_session=session, formstyle=FormStyleBulma)
     if form.accepted:
+        redirect(URL('view_event', id))
+    return dict(form=form)
+
+@action('edit_venue/<id:int>', method=["GET", "POST"])
+@action.uses('edit_venue.html', db, session, auth.user)
+def edit_venue(id=None):
+    assert id is not None
+    edit_venue = db.venue[id]
+    # if edit_event.created_by != auth.user(): raise HTTP(400)
+    if edit_venue is None:
         redirect(URL('index'))
+    form = Form(db.venue, record=edit_venue, deletable=False, csrf_session=session, formstyle=FormStyleBulma)
+    if form.accepted:
+        redirect(URL('view_venue', id))
     return dict(form=form)
 
 @action('view_event/<id:int>', method=["GET", "POST"])
@@ -70,6 +91,16 @@ def view_event(id=None):
     rows = db(db.event.id == id).select()
     return dict(events=rows)
 
+@action('view_venue/<id:int>', method=["GET", "POST"])
+@action.uses('view_venue.html', db, session, auth.user)
+def view_event(id=None):
+    assert id is not None
+    edit_venue = db.venue[id]
+    if edit_venue is None:
+        redirect(URL('index'))
+    rows = db(db.venue.id == id).select()
+    return dict(venues=rows)
+
 @action('delete_event/<id:int>')
 @action.uses(db, session, auth.user)
 def delete_event(id=None):
@@ -78,6 +109,16 @@ def delete_event(id=None):
     if event_id is None:
         redirect(URL('index'))
     db(db.event.id == id).delete()
+    redirect(URL('index'))
+
+@action('delete_venue/<id:int>')
+@action.uses(db, session, auth.user)
+def delete_venue(id=None):
+    assert id is not None
+    venue_id = db.venue[id]
+    if venue_id is None:
+        redirect(URL('index'))
+    db(db.venue.id == id).delete()
     redirect(URL('index'))
 
 @action("search_events", method=["GET"])
