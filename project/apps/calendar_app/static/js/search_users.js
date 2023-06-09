@@ -8,23 +8,23 @@ function init() {
     var self = {};
     self.data = {};    
     self.methods = {};
-    self.data.venues = [];
+    self.data.users = [];
     self.data.text = ""
 
-    // Get events
-    axios.get("../get_venues").then(function(r){
-        self.vue.venues = r.data.venues;
+    // Get users
+    axios.get("../get_users").then(function(r){
+        self.vue.users = r.data.users;
     });
     
     // Search function
-    self.methods.filter_events = function() {
+    self.methods.filter_users = function() {
       if(self.vue.text.length>0) {
-          fetch("/calendar_app/get_venues?text="+encodeURIComponent(self.vue.text))
+          fetch("/calendar_app/get_users?text="+encodeURIComponent(self.vue.text))
           .then(r=>r.json())
           .then(function(data){
-            self.vue.venues = data.venues;
+            self.vue.users = data.users;
           }).catch(function(error) {
-            console.error("Error fetching events:", error)});
+            console.error("Error fetching users:", error)});
         }
         else {
             self.methods.clear();
@@ -36,13 +36,13 @@ function init() {
         // Empty text variables to clear input
         self.data.text = "";
         self.vue.text = "";
-        // Refetch all events
-        fetch("/calendar_app/get_venues?text="+encodeURIComponent(self.vue.text))
+        // Refetch all users
+        fetch("/calendar_app/get_users?text="+encodeURIComponent(self.vue.text))
         .then(r=>r.json())
         .then(function(data){
-          self.vue.venues = data.venues;
+          self.vue.users = data.users;
         }).catch(function(error) {
-          console.error("Error fetching venues:", error)});
+          console.error("Error fetching users:", error)});
     };
 
     self.vue = new Vue({el:"#vue", data: self.data, methods: self.methods});

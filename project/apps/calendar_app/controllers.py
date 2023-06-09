@@ -138,6 +138,21 @@ def get_events():
     events = db((db.event.name.contains(text)) & (db.event.created_by == username)).select()
     return dict(events=events)
 
+@action("search_users", method=["GET"])
+@action.uses('search_users.html', db, session, auth.user)
+def search_users():
+    text = request.GET.get("text", "")
+    users = db(db.auth_user.username.contains(text)).select()
+    return dict(users=users)
+
+@action("get_users", method=["GET"])
+@action.uses(db, session, auth.user)
+def get_users():
+    text = request.GET.get("text", "")
+    users = db((db.auth_user.username.contains(text) & (db.auth_user.id != auth.get_user()['id']))).select()
+    return dict(users=users)
+
+
 # made this to get venues to put into searchEvents
 @action("get_venues", method=["GET"])
 @action.uses(db, session, auth.user)

@@ -9,24 +9,24 @@
     </div>
 
     <div class="block">
-        <h1 class="title">Search All Venues</h1>
+        <h1 class="title">Search All Users</h1>
     </div>
     
     <div class="field">
         <p class="control has-icons-right">
-            <input class="input" v-model="text" v-on:keyup="filter_venues()" placeholder="Search venue by name...">
+            <input class="input" v-model="text" v-on:keyup="filter_users()" placeholder="Search users by name...">
             <span class="icon is-small is-right is-clickable">
                 <i class="fa fa-times-circle" v-on:click="clear()"></i>
             </span>
         </p>
     </div>
 
-    <div class="block" v-if="text.length>0" v-for="venue in venues">
-            <a v-bind:href="'/calendar_app/view_venue/'+venue.id">{{venue.venue_name}}</a>
+    <div class="block" v-if="text.length>0" v-for="user in users">
+            <a v-bind:href="'/calendar_app/view_user/'+user.id">{{user.username}}</a>
         
     </div>
-    <div class="block" v-if="text.length==0" v-for="venue in venues">
-        <a v-bind:href="'/calendar_app/view_venue/'+venue.id">{{venue.venue_name}}</a>
+    <div class="block" v-if="text.length==0" v-for="user in users">
+        <a v-bind:href="'/calendar_app/view_user/'+user.id">{{user.username}}</a>
     </div>
     
 </div>
@@ -34,5 +34,5 @@
 [[block page_scripts]]
 <!-- Loads the index-specific js for Vue -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
-<script src="js/search_venues.js"></script>
+<script src="js/search_users.js"></script>
 [[end]]

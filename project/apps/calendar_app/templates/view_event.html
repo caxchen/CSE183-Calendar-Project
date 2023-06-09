@@ -8,12 +8,9 @@
     </div>
     <div class="block">
     <h1 class="title">Time</h1>
-    [[ if event.all_day == False: ]]
         <div>[[=event.event_time]]</div>
-    [[ else: ]]
-        <div>All-day</div>
     </div>
-    [[ pass ]]
+    <!-- [[ pass ]] -->
     <div class="block">
     <h1 class="title">Event Description</h1>
     <div>[[=event.description]]</div>
@@ -25,13 +22,13 @@
     <a class="button is-warning" href="[[=URL('view_venue', event.venue_id)]]">
         <span>See Venue</span>
     </a>
-    <a class="button is-link" href="[[=URL('edit_event', event.id)]]">
+    <a class="button is-primary" href="[[=URL('edit_event', event.id)]]">
         <span>Edit This Event</span>
     </a>
     <a class="button is-danger" href="[[=URL('delete_event', event.id)]]">
         <span>Delete This Event</span>
     </a>
-    <a class="button is-success" href="[[=URL('index')]]">
+    <a class="button is-info" href="[[=URL('index')]]">
         <span>Back</span>
     </a>
     [[pass]]
