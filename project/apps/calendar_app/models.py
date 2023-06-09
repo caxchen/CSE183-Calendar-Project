@@ -24,8 +24,8 @@ db.define_table(
     Field('address', requires=IS_NOT_EMPTY()),
     Field('city', requires=IS_NOT_EMPTY()),
     Field('state', requires=IS_NOT_EMPTY()),
-    Field('zip_code', 'integer', requires=IS_NOT_EMPTY()),
-    Field('capacity', 'integer', requires=IS_NOT_EMPTY()),
+    Field('zip_code', 'integer', requires=(IS_NOT_EMPTY(),IS_INT_IN_RANGE(0, 1e5))),
+    Field('capacity', 'integer', requires=(IS_NOT_EMPTY(),IS_INT_IN_RANGE(0, 1e6))),
     auth.signature
 )
 
