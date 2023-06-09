@@ -176,16 +176,13 @@ def search_events():
 @action.uses("create_category.html", db, session, auth.user)
 def create_category():
     form = Form(db.category, fields=['category_name', 'color'], csrf_session=session, formstyle=FormStyleBulma)
-    category_name = ''
-    color = ''
+    cat = request.params.get('cat_name')
+    colors = request.params.get('color')
+    db.category.insert(color=colors, category_name=cat)
+    print("redirecting to", URL("index"))
     if form.accepted:
-        category_name = form.vars.category_name if form.vars else ''
-        #retrieves selected color
-        color = request.vars.color if 'color' in request.vars else ''
         redirect(URL('index'))
-
-    categories = db(db.category).select()
-    return dict(form=form, category_name=category_name, color=color, categories=categories)
+    return dict(form=form)
 
 @action('edit_category/<id:int>', method=["GET", "POST"])
 @action.uses('edit_category.html', db, session, auth.user)

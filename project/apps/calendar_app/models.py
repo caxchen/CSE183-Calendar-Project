@@ -42,7 +42,7 @@ db.define_table(
 )
 db.define_table(
     'category',
-    Field('category_name', 'string', required=True, requires=IS_NOT_EMPTY),
+    Field('category_name', 'text', requires=IS_NOT_EMPTY()),
     Field('color', 'string', required=True),
     auth.signature,
 )
