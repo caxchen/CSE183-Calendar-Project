@@ -2,12 +2,17 @@
 
 <div class="section mx-6" id="vue" v-cloak>
 
+    <!--
+    <div id="event_id">
+        Event ID: [[=event_id]]
+    </div>
+    -->
+
     <div class="block">
         <a class="button is-info" href="[[=URL('index')]]">
-            <span>Back</span>
+            <span>Back to Calendar</span>
         </a>
     </div>
-
     <div class="block">
         <h1 class="title">Search All Users</h1>
     </div>
@@ -22,12 +27,16 @@
     </div>
 
     <div class="block" v-if="text.length>0" v-for="user in users">
-            <a v-bind:href="'/calendar_app/view_user/'+user.id">{{user.username}}</a>
+            <a v-bind:href="'/calendar_app/invite_user/event_id/'+user.username">{{user.username}}</a>
         
     </div>
     <div class="block" v-if="text.length==0" v-for="user in users">
-        <a v-bind:href="'/calendar_app/view_user/'+user.id">{{user.username}}</a>
+        <a v-bind:href="'/calendar_app/invite_user/[[=event_id]]/'+user.username" method="POST">{{user.username}}</a>
+        
     </div>
+    <!--
+    "'/calendar_app/invite_user/event_id/'+user.username"
+    -->
     
 </div>
 
