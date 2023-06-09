@@ -32,8 +32,7 @@ db.define_table(
 # Event table defined here
 db.define_table(
     'event',
-    #Field('category_id', db.category, requires=IS_IN_DB(db, 'category.id', '%(category_name)s', zero='Select category')),
-    Field('venue_id', db.venue, requires=IS_IN_DB(db, 'venue.id', '%(venue_name)s', zero='Select Venue')),
+    Field('venue_id', db.venue, requires=IS_EMPTY_OR(IS_IN_DB(db, 'venue.id', '%(venue_name)s', zero='Select Venue'))),
     Field('name', requires=IS_NOT_EMPTY()),
     Field('event_time', 'datetime', default=get_time(), requires=(IS_NOT_EMPTY(), IS_DATETIME())),
     Field('description', 'text'),

@@ -49,7 +49,7 @@ def create_event():
 
 @action("create_venue", method=["GET", "POST"])
 @action.uses("create_venue.html", db, session, auth.user)
-def create_event():
+def create_venue():
     form = Form(db.venue, csrf_session=session, formstyle=FormStyleBulma)
     if form.accepted:
         redirect(URL('index'))
@@ -93,7 +93,7 @@ def view_event(id=None):
 
 @action('view_venue/<id:int>', method=["GET", "POST"])
 @action.uses('view_venue.html', db, session, auth.user)
-def view_event(id=None):
+def view_venue(id=None):
     assert id is not None
     edit_venue = db.venue[id]
     if edit_venue is None:
