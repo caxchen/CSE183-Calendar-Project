@@ -19,9 +19,11 @@
         <h1 class="title">Event Venue</h1>
         <div>[[=event.venue_id]]</div>
     </div>
+    [[if event.venue_id:]]
     <a class="button is-warning" href="[[=URL('view_venue', event.venue_id)]]">
         <span>See Venue</span>
     </a>
+    [[pass]]
     <a class="button is-primary" href="[[=URL('edit_event', event.id)]]">
         <span>Edit This Event</span>
     </a>
