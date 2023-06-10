@@ -32,12 +32,13 @@ from py4web.utils.url_signer import URLSigner
 from py4web.utils.form import Form, FormStyleBulma
 
 @action("index")
-@action.uses("index.html", auth.user, T)
+@action.uses("index.html", db, auth.user, T)
 def index():
     user = auth.get_user()
     message = T("{first_name}'s Calendar".format(**user) if user else "Hello")
     actions = {"allowed_actions": auth.param.allowed_actions}
-    return dict(message=message, actions=actions)
+    invite_count = len(db(db.invitations.recipient == auth.current_user.get('username')).select())
+    return dict(message=message, actions=actions, invite_count=invite_count)
 
 @action("create_event", method=["GET", "POST"])
 @action.uses("create_event.html", db, session, auth.user)
