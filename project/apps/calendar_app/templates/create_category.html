@@ -22,3 +22,34 @@
     </a>
 </div>
 
+
+<h1 class="title mt-5">Apply Category to Event</h1>
+    <form action="[[=URL('apply_category')]]" method="POST">
+        <div class="field">
+            <label class="label">Event</label>
+            <div class="control">
+                <div class="select">
+                    <select name="event_id">
+                        <option value="">Select an event</option>
+                        [[ for event in events: ]]
+                            <option value="[[=event.id]]" name="event_id">[[=event.name]]</option>
+                        [[ pass ]]
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Category</label>
+            <div class="control">
+                <div class="select">
+                    <select name="category_id">
+                        <option value="">Select a category</option>
+                        [[ for category in categories: ]]
+                            <option value="[[=category.id]]" name="category_id">[[=category.category_name]]</option>
+                        [[ pass ]]
+                    </select>
+                </div>
+            </div>
+        </div>
+        <button class="button is-link" id="Apply" >Apply</button>
+    </form>

@@ -216,7 +216,23 @@ def delete_category(id=None):
     db(db.category.id == id).delete()
     redirect(URL('index'))
 
+@action('apply_category', method=["POST", "GET"])
+@action.uses('create_category.html',db, session, auth.user)
+def apply_category():
+    event_id = request.params.get('event_id')
+    category_id = request.params.get('category_id')
 
+    # Retrieve the event and category objects from the database
+    event = db.event[event_id]
+    category = db.category[category_id]
 
+    if event and category:
+        # Apply the category to the event
+        event.category_id = category.id
+        event.update_record()
 
-
+        # Return the category color in the response
+        #return {'categoryColor': category.color}
+        return dict(event=event, category=category)
+    # stays on same page
+    redirect(URL('create_category'))
