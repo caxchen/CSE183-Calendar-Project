@@ -70,6 +70,7 @@ db.venue.modified_on.readable =  False
 db.venue.modified_by.readable = False
 
 # Change readable/writable permissions for event table
+db.event.category_id.readable = db.event.category_id.writable = False
 db.event.venue.readable = False
 db.event.id.readable = db.event.id.writable = False
 db.event.created_on.readable = db.event.created_on.writable = False
