@@ -45,6 +45,13 @@ db.define_table(
     Field('color', 'string', required=True),
     auth.signature,
 )
+db.define_table(
+    'invitations',
+    Field('inviter', default=''), # holds username string of invite sender
+    Field('recipient', default=''), # holds username string of invite recipient
+    Field('event_id', requires=IS_NOT_EMPTY()),
+    auth.signature,
+)
 
 # Change readable/writable permissions for category table
 db.category.id.readable = db.category.id.writable = False

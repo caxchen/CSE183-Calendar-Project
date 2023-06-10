@@ -138,12 +138,14 @@ def get_events():
     events = db((db.event.name.contains(text)) & (db.event.created_by == username)).select()
     return dict(events=events)
 
-@action("search_users", method=["GET"])
+@action("search_users/<id:int>", method=["GET"])
 @action.uses('search_users.html', db, session, auth.user)
-def search_users():
+def search_users(id=None):
     text = request.GET.get("text", "")
     users = db(db.auth_user.username.contains(text)).select()
-    return dict(users=users)
+    # now get invitations
+    #invitations = db(db.invitations.)
+    return dict(users=users, event_id=id)
 
 @action("get_users", method=["GET"])
 @action.uses(db, session, auth.user)
@@ -151,7 +153,6 @@ def get_users():
     text = request.GET.get("text", "")
     users = db((db.auth_user.username.contains(text) & (db.auth_user.id != auth.get_user()['id']))).select()
     return dict(users=users)
-
 
 # made this to get venues to put into searchEvents
 @action("get_venues", method=["GET"])
@@ -222,14 +223,46 @@ def apply_category():
     event_id = request.params.get('event_id')
     category_id = request.params.get('category_id')
 
-    # Retrieve the event and category objects from the database
-    event = db.event[event_id]
-    category = db.category[category_id]
+@action('invite_user/<event_id>/<recipient_username>', method=["GET","POST"])
+@action.uses(db, auth.user)
+def invite_user(event_id, recipient_username):
+    inviter_username = auth.get_user()['username']
+    got = db((db.invitations.inviter==inviter_username) & (db.invitations.recipient==recipient_username) & (db.invitations.event_id==event_id)).select()
+    if (len(got) <= 0): 
+        db.invitations.insert(inviter=inviter_username, recipient=recipient_username, event_id=event_id)
+    redirect(URL('search_users/'+event_id))
 
-    if event and category:
-        # Apply the category to the event
-        event.category_id = category.id
-        event.update_record()
+@action('get_invitations')
+@action.uses('invitations.html', db, session, auth.user)
+def get_invitations():
+    username = auth.get_user()['username']
+    # get invitations
+    invitations = db((db.invitations.recipient==username)).select()
+    # now get events those invitation event ids refer to and put them in a dict for easy lookup: events[invitation.id]
+    events = dict()
+    if (len(invitations) > 0):
+        for invitation in invitations:
+            events[invitation.id] = db(db.event.id==invitation.event_id).select()[0]
+    return dict(invitations=invitations, events=events)
+
+@action('accept_invitation/<invitation_id>', method=["GET", "DELETE"])
+@action.uses(db, session, auth.user)
+def accept_invitation(invitation_id):
+    # username = auth.get_user()['username']
+    # First, insert copy into user's event table
+    invitation_set = db(db.invitations.id==invitation_id)
+    invitation = invitation_set.select()[0]
+    event_id = invitation.event_id
+    got_event = db(db.event.id==event_id).select()[0]
+    venue_id = got_event.venue_id
+    name=got_event.name
+    event_time = got_event.event_time
+    description = got_event.description
+    all_day = got_event.all_day
+    db.event.insert(venue_id=venue_id, name=name, event_time=event_time, description=description, all_day=all_day)
+    # then delete the invitation
+    invitation_set.delete()
+    redirect(URL('get_invitations'))
 
         # Return the category color in the response
         #return {'categoryColor': category.color}
