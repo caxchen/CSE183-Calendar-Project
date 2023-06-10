@@ -257,7 +257,7 @@ def invite_user(event_id, recipient_username):
     redirect(URL('search_users/'+event_id))
 
 @action('get_invitations')
-@action.uses('invitations.html', db, session, auth.user)
+@action.uses('view_invitations.html', db, session, auth.user)
 def get_invitations():
     username = auth.get_user()['username']
     # get invitations

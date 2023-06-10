@@ -1,0 +1,30 @@
+[[extend 'layout.html']]
+
+<div class="section"> 
+    <div class="block">
+        <a class="button is-info" href="[[=URL('index')]]">
+            <span>Back to Calendar</span>
+        </a>
+    </div>
+
+    <div class="block">
+        <h1 class="title">Event Invitations</h1>
+    </div>
+
+    <div>
+    [[for invitation in invitations:]]
+        <div class="block">
+                <div class="subtitle">Invitation from: [[=invitation.inviter]]</div>
+                <p><b>Event:</b> [[=events[invitation.id].name]]</p>
+                <p><b>Time:</b> [[=events[invitation.id].event_time]]</p>
+                <p><b>Description:</b> [[=events[invitation.id].description]]</p>
+                <br>
+                <a class="button is-success" href="[[=URL('accept_invitation', invitation.id)]]">Accept Invite</a>
+                <a class="button is-danger" href="[[=URL('decline_invitation', invitation.id)]]">Decline Invite</a>
+        </div>
+    [[pass]]
+    </div>
+    
+
+
+</div>
