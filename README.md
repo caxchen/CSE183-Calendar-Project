@@ -1,6 +1,6 @@
 # CSE 183 Calendar Project
 
-Design Document also available here: https://docs.google.com/document/d/1cfnQC7ihEeKunWU8zJE8hmniqjNbU9gRTUZ3KVrYsCQ/edit?usp=sharing
+Design Document w/ screenshots also available here: https://docs.google.com/document/d/1cfnQC7ihEeKunWU8zJE8hmniqjNbU9gRTUZ3KVrYsCQ/edit?usp=sharing
 
 Project Title: Event Calendar
 
