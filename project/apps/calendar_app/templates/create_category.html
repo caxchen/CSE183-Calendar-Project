@@ -43,7 +43,7 @@
                 <div class="select">
                     <select name="category_id">
                         <option value="">Select a Category</option>
-                        [[for category in categories:]]
+                        [[for category in category:]]
                             <option value="[[=category.id]]" name="category_id">[[=category.category_name]]</option>
                         [[pass]]
                     </select>

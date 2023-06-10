@@ -1,29 +1,3 @@
-"""
-This file defines actions, i.e. functions the URLs are mapped into
-The @action(path) decorator exposed the function at URL:
-
-    http://127.0.0.1:8000/{app_name}/{path}
-
-If app_name == '_default' then simply
-
-    http://127.0.0.1:8000/{path}
-
-If path == 'index' it can be omitted:
-
-    http://127.0.0.1:8000/
-
-The path follows the bottlepy syntax.
-
-@action.uses('generic.html')  indicates that the action uses the generic.html template
-@action.uses(session)         indicates that the action uses the session
-@action.uses(db)              indicates that the action uses the db
-@action.uses(T)               indicates that the action uses the i18n & pluralization
-@action.uses(auth.user)       indicates that the action requires a logged in user
-@action.uses(auth)            indicates that the action requires the auth object
-
-session, db, T, auth, and tempates are examples of Fixtures.
-Warning: Fixtures MUST be declared with @action.uses({fixtures}) else your app will result in undefined behavior
-"""
 
 from py4web import action, request, abort, redirect, URL, HTTP
 from yatl.helpers import A
@@ -183,67 +157,59 @@ def create_category():
 
     db.category.insert(color=colors, category_name=cat)
     events = db(db.event).select()
-    categories = db(db.category).select()
+    category = db(db.category).select()
     print("redirecting to", URL("index"))
     if form.accepted:
         redirect(URL('index'))
-    return dict(form=form, events=events, categories=categories)
+    return dict(form=form, events=events, category=category)
+
 
 @action('edit_category/<id:int>', method=["GET", "POST"])
-@action.uses('edit_category.html', db, session, auth.user)
+@action.uses('edit_category.html', db.category, db, session, auth.user)
 def edit_category(id=None):
     assert id is not None
     edit_category = db.category[id]
     if edit_category is None:
         redirect(URL('index'))
-    form = Form(db.category, fields=['category_name', 'category_description', 'color'], record=edit_category, deletable=False, csrf_session=session, formstyle=FormStyleBulma)
+    form = Form(db.event.category_id, db.category, fields=['category_name', 'category_description', 'color'], record=edit_category, deletable=False, csrf_session=session, formstyle=FormStyleBulma)
     if form.accepted:
         redirect(URL('view_category', id))
     return dict(form=form)
+# currently not being used.
+#@action('view_category/<id:int>', method=["GET", "POST"])
+#@action.uses('view_category.html',db , session, auth.user)
+#def view_category(id=None):
+#    assert id is not None
+#    view_category = db.category[id]
+#    if view_category is None:
+#        redirect(URL('index'))
+#    rows = db(db.category.id == id).select()
+#    return dict(category=rows)
 
-@action('view_category/<id:int>', method=["GET", "POST"])
-@action.uses('view_category.html', db, session, auth.user)
-def view_category(id=None):
-    assert id is not None
-    view_category = db.category[id]
-    if view_category is None:
-        redirect(URL('index'))
-    rows = db(db.category.id == id).select()
-    return dict(cat=rows)
 
-@action('delete_category/<id:int>')
-@action.uses(db, session, auth.user)
-def delete_category(id=None):
-    assert id is not None
-    category_id = db.category[id]
-    if category_id is None:
-        redirect(URL('index'))
-    db(db.category.id == id).delete()
-    redirect(URL('index'))
+#@action('delete_category/<id:int>')
+#@action.uses(db, session, auth.user)
+#def delete_category(id=None):
+#    assert id is not None
+#    category_id = db.category[id]
+#    if category_id is None:
+#        redirect(URL('index'))
+#    db(db.category.id == id).delete()
+#    redirect(URL('index'))
 
 
 @action('apply_category', method=["POST", "GET"])
-@action.uses('create_category.html',db, session, auth.user)
+@action.uses('create_category.html', db, session, auth.user)
 def apply_category():
     event_id = request.params.get('event_id')
     category_id = request.params.get('category_id')
 
-    # Retrieve the event and category objects from the database
-    event = db.event[event_id]
-    category = db.category[category_id]
+    event = db(db.event.id == event_id).select()
+    category = db(db.category.id == category_id).select()
 
     if event and category:
-        # Apply the category to the event
-        event.category_id = category.id
-        event.update_record()
-
-        # Return the category color in the response
-        #return {'categoryColor': category.color}
-        return dict(event=event, category=category)
-    # stays on same page
-    redirect(URL('create_category'))
-
-
+        return dict(events=event, category=category)
+    redirect(URL('index'))
 
 
 
