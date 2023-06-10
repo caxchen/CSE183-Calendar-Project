@@ -54,16 +54,30 @@ function main() {
                     let time = r.data.events[i].event_time;
                     let all_day = r.data.events[i].all_day;
                     let description = r.data.events[i].description;
-                    // create calendar event with data from event database
-                    calendar.addEvent({
+                    //let color = r.data.categories[r.data.events[i].category - 1].color;
+                    if (r.data.events[i].category) {
+                      calendar.addEvent({
                         id: event_id,
                         title: name,
                         start: time,
                         allDay: all_day,
+                        backgroundColor: r.data.categories[r.data.events[i].category - 1].color,
                         extendedProps: {
                             description: description
                         }
-                    })
+                      });
+                    } else {
+                      // create calendar event with data from event database
+                      calendar.addEvent({
+                          id: event_id,
+                          title: name,
+                          start: time,
+                          allDay: all_day,
+                          extendedProps: {
+                              description: description
+                          }
+                      });
+                    }
                 }
                 // render calendar
                 calendar.render();

@@ -29,22 +29,21 @@ db.define_table(
     auth.signature
 )
 
+db.define_table(
+    'category',
+    Field('category_name', 'text', requires=IS_NOT_EMPTY()),
+    Field('color', 'string', required=True),
+    auth.signature,
+)
 # Event table defined here
 db.define_table(
     'event',
-    #Field('category_id', db.category, requires=IS_EMPTY_OR(IS_IN_DB(db, 'category.id', '%(category_name)s', zero='Select Category'))),
-    Field('category_id'),
+    Field('category', db.category, requires=IS_EMPTY_OR(IS_IN_DB(db, 'category.id', '%(category_name)s', zero='Select Category'))),
     Field('venue', db.venue, requires=IS_EMPTY_OR(IS_IN_DB(db, 'venue.id', '%(venue_name)s', zero='Select Venue'))),
     Field('name', requires=IS_NOT_EMPTY()),
     Field('event_time', 'datetime', default=get_time(), requires=(IS_NOT_EMPTY(), IS_DATETIME())),
     Field('description', 'text'),
     Field('all_day', 'boolean', default=False),
-    auth.signature,
-)
-db.define_table(
-    'category',
-    Field('category_name', 'text', requires=IS_NOT_EMPTY()),
-    Field('color', 'string', required=True),
     auth.signature,
 )
 db.define_table(
@@ -70,7 +69,7 @@ db.venue.modified_on.readable =  False
 db.venue.modified_by.readable = False
 
 # Change readable/writable permissions for event table
-db.event.category_id.readable = db.event.category_id.writable = False
+db.event.category.readable = False
 db.event.venue.readable = False
 db.event.id.readable = db.event.id.writable = False
 db.event.created_on.readable = db.event.created_on.writable = False

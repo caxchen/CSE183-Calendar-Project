@@ -111,7 +111,8 @@ def get_events():
     username = auth.get_user()['id']
     text = request.GET.get("text", "")
     events = db((db.event.name.contains(text)) & (db.event.created_by == username)).select()
-    return dict(events=events)
+    categories = db(db.category).select()
+    return dict(events=events, categories=categories)
 
 @action("search_users/<id:int>", method=["GET"])
 @action.uses('search_users.html', db, session, auth.user)
