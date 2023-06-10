@@ -179,11 +179,14 @@ def create_category():
     form = Form(db.category, fields=['category_name', 'color'], csrf_session=session, formstyle=FormStyleBulma)
     cat = request.params.get('cat_name')
     colors = request.params.get('color')
+
     db.category.insert(color=colors, category_name=cat)
+    events = db(db.event).select()
+    categories = db(db.category).select()
     print("redirecting to", URL("index"))
     if form.accepted:
         redirect(URL('index'))
-    return dict(form=form)
+    return dict(form=form, events=events, categories=categories)
 
 @action('edit_category/<id:int>', method=["GET", "POST"])
 @action.uses('edit_category.html', db, session, auth.user)
