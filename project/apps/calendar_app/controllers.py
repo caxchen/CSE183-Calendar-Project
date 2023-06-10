@@ -22,14 +22,6 @@ def create_event():
         redirect(URL('index'))
     return dict(form=form)
 
-@action("create_venue", method=["GET", "POST"])
-@action.uses("create_venue.html", db, session, auth.user)
-def create_venue():
-    form = Form(db.venue, csrf_session=session, formstyle=FormStyleBulma)
-    if form.accepted:
-        redirect(URL('index'))
-    return dict(form=form)
-
 @action('edit_event/<id:int>', method=["GET", "POST"])
 @action.uses('edit_event.html', db, session, auth.user)
 def edit_event(id=None):
@@ -43,19 +35,6 @@ def edit_event(id=None):
         redirect(URL('view_event', id))
     return dict(form=form)
 
-@action('edit_venue/<id:int>', method=["GET", "POST"])
-@action.uses('edit_venue.html', db, session, auth.user)
-def edit_venue(id=None):
-    assert id is not None
-    edit_venue = db.venue[id]
-    # if edit_event.created_by != auth.user(): raise HTTP(400)
-    if edit_venue is None:
-        redirect(URL('index'))
-    form = Form(db.venue, record=edit_venue, deletable=False, csrf_session=session, formstyle=FormStyleBulma)
-    if form.accepted:
-        redirect(URL('view_venue', id))
-    return dict(form=form)
-
 @action('view_event/<id:int>', method=["GET", "POST"])
 @action.uses('view_event.html', db, session, auth.user)
 def view_event(id=None):
@@ -66,16 +45,6 @@ def view_event(id=None):
     rows = db(db.event.id == id).select()
     return dict(events=rows)
 
-@action('view_venue/<id:int>', method=["GET", "POST"])
-@action.uses('view_venue.html', db, session, auth.user)
-def view_venue(id=None):
-    assert id is not None
-    edit_venue = db.venue[id]
-    if edit_venue is None:
-        redirect(URL('index'))
-    rows = db(db.venue.id == id).select()
-    return dict(venues=rows)
-
 @action('delete_event/<id:int>')
 @action.uses(db, session, auth.user)
 def delete_event(id=None):
@@ -84,16 +53,6 @@ def delete_event(id=None):
     if event_id is None:
         redirect(URL('index'))
     db(db.event.id == id).delete()
-    redirect(URL('index'))
-
-@action('delete_venue/<id:int>')
-@action.uses(db, session, auth.user)
-def delete_venue(id=None):
-    assert id is not None
-    venue_id = db.venue[id]
-    if venue_id is None:
-        redirect(URL('index'))
-    db(db.venue.id == id).delete()
     redirect(URL('index'))
 
 @action("search_events", method=["GET"])
@@ -128,24 +87,6 @@ def get_users():
     text = request.GET.get("text", "")
     users = db((db.auth_user.username.contains(text) & (db.auth_user.id != auth.get_user()['id']))).select()
     return dict(users=users)
-
-# made this to get venues to put into searchEvents
-@action("get_venues", method=["GET"])
-@action.uses(db, session, auth.user)
-def get_events():
-    # username = auth.get_user()['id']
-    text = request.GET.get("text", "")
-    venues = db((db.venue.venue_name.contains(text))).select()
-    return dict(venues=venues)
-
-@action("search_venues", method=["GET"])
-@action.uses('search_venues.html', db, session, auth.user)
-def search_events():
-    #username = auth.get_user()['id']
-    request.GET.get("text", "")
-    venues = db(db.venue).select()
-    return dict(venues=venues)
-
 
 ### category ###
 @action("create_category", method=["GET", "POST"])
@@ -244,12 +185,12 @@ def accept_invitation(invitation_id):
     invitation = invitation_set.select()[0]
     event_id = invitation.event_id
     got_event = db(db.event.id==event_id).select()[0]
-    venue = got_event.venue
     name = got_event.name
+    location = got_event.location
     event_time = got_event.event_time
     description = got_event.description
     all_day = got_event.all_day
-    db.event.insert(venue=venue, name=name, event_time=event_time, description=description, all_day=all_day)
+    db.event.insert(name=name, event_time=event_time, location=location, description=description, all_day=all_day)
     # then delete the invitation
     invitation_set.delete()
     redirect(URL('get_invitations'))

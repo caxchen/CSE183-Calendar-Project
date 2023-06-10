@@ -15,18 +15,13 @@
         <div>[[=event.event_time]]</div>
     </div>
     <div class="block">
+        <h1 class="title is-4">Location</h1>
+        <div>[[=event.location]]</div>
+    </div>
+    <div class="block">
     <h1 class="title is-4">Event Description</h1>
     <div>[[=event.description]]</div>
     </div>
-    <div class="block">
-        <h1 class="title is-4">Event Venue</h1>
-        <div>[[=event.venue]]</div>
-    </div>
-    [[if event.venue:]]
-    <a class="button is-warning" href="[[=URL('view_venue', event.venue)]]">
-        <span>See Venue</span>
-    </a>
-    [[pass]]
     <a class="button is-primary" href="[[=URL('edit_event', event.id)]]">
         <span>Edit This Event</span>
     </a>
