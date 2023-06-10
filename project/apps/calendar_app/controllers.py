@@ -277,12 +277,12 @@ def accept_invitation(invitation_id):
     invitation = invitation_set.select()[0]
     event_id = invitation.event_id
     got_event = db(db.event.id==event_id).select()[0]
-    venue_id = got_event.venue_id
-    name=got_event.name
+    venue = got_event.venue
+    name = got_event.name
     event_time = got_event.event_time
     description = got_event.description
     all_day = got_event.all_day
-    db.event.insert(venue_id=venue_id, name=name, event_time=event_time, description=description, all_day=all_day)
+    db.event.insert(venue=venue, name=name, event_time=event_time, description=description, all_day=all_day)
     # then delete the invitation
     invitation_set.delete()
     redirect(URL('get_invitations'))

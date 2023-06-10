@@ -27,17 +27,16 @@
     </div>
 
     <div class="block" v-if="text.length>0" v-for="user in users">
-            <a v-bind:href="'/[[=request.app_name]]/invite_user/[[=event_id]]/'+user.username">{{user.username}}</a>
-        
+        <a onclick="inviteSent()" v-bind:href="'/[[=request.app_name]]/invite_user/[[=event_id]]/'+user.username">{{user.username}}</a>
     </div>
     <div class="block" v-if="text.length==0" v-for="user in users">
-        <a v-bind:href="'/[[=request.app_name]]/invite_user/[[=event_id]]/'+user.username" method="POST">{{user.username}}</a>
-        
+        <a onclick="inviteSent()"v-bind:href="'/[[=request.app_name]]/invite_user/[[=event_id]]/'+user.username" method="POST">{{user.username}}</a>
     </div>
-    <!--
-    "'/calendar_app/invite_user/event_id/'+user.username"
-    -->
-    
+    <script>
+        function inviteSent() {
+            alert("Invite sent!");
+        }
+    </script>
 </div>
 
 [[block page_scripts]]

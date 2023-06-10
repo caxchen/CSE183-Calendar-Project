@@ -17,9 +17,9 @@
     </div>
     <div class="block">
         <h1 class="title">Event Venue</h1>
-        <div>[[=event.venue_id]]</div>
+        <div>[[=event.venue]]</div>
     </div>
-    [[if event.venue_id:]]
+    [[if event.venue:]]
     <a class="button is-warning" href="[[=URL('view_venue', event.venue_id)]]">
         <span>See Venue</span>
     </a>

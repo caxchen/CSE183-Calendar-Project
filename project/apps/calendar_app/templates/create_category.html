@@ -1,39 +1,38 @@
 [[extend 'layout.html']]
 
-<div class="section"> 
-    <h1 class="title"> new category </h1>
+<div class="section">
+    <a class="button mb-5 is-info" href="[[=URL('index')]]">
+            <span>Back</span>
+    </a>
+    <h1 class="title">New Category</h1>
     <form action="[[=URL('create_category')]]" method="POST">
         <div class="field">
             <div class="control">
-                <input class="input" type="text" placeholder="enter a category" id="new_cat_name" name="cat_name">
+                <input class="input" type="text" placeholder="New Category Name..." id="new_cat_name" name="cat_name">
     
             </div>
         </div>
-
         <div class="field">
             <div class="control">
-                <input class="input" type="color" placeholder="enter a color" id="newcolor" name="color">
+                <input class="input" type="color" placeholder="New Category Color..." id="newcolor" name="color">
             </div>
         </div>
         <button class="button is-link">Submit</button>
     </form>
-    <a class="button mb-5 is-info" href="[[=URL('index')]]">
-        <span>Back</span>
-    </a>
 </div>
 
-
-<h1 class="title mt-5">Apply Category to Event</h1>
+<div class="section">
+    <h1 class="title mt-5">Apply Category to Event</h1>
     <form action="[[=URL('apply_category')]]" method="POST">
         <div class="field">
             <label class="label">Event</label>
             <div class="control">
                 <div class="select">
                     <select name="event_id">
-                        <option value="">Select an event</option>
-                        [[ for event in events: ]]
+                        <option value="">Select an Event</option>
+                        [[for event in events:]]
                             <option value="[[=event.id]]" name="event_id">[[=event.name]]</option>
-                        [[ pass ]]
+                        [[pass]]
                     </select>
                 </div>
             </div>
@@ -43,13 +42,14 @@
             <div class="control">
                 <div class="select">
                     <select name="category_id">
-                        <option value="">Select a category</option>
-                        [[ for category in categories: ]]
+                        <option value="">Select a Category</option>
+                        [[for category in categories:]]
                             <option value="[[=category.id]]" name="category_id">[[=category.category_name]]</option>
-                        [[ pass ]]
+                        [[pass]]
                     </select>
                 </div>
             </div>
         </div>
         <button class="button is-link" id="Apply" >Apply</button>
     </form>
+</div>
