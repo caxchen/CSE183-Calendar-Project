@@ -16,12 +16,6 @@ def get_username():
 def get_time():
     return datetime.datetime.now()
 
-db.define_table(
-    'category',
-    Field('category_name', 'text', requires=IS_NOT_EMPTY()),
-    Field('color', 'string', required=True),
-    auth.signature,
-)
 # Event table defined here
 db.define_table(
     'event',

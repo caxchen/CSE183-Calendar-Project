@@ -26,11 +26,11 @@ def create_event():
 @action.uses('edit_event.html', db, session, auth.user)
 def edit_event(id=None):
     assert id is not None
-    edit_event = db.event[id]
-    # if edit_event.created_by != auth.user(): raise HTTP(400)
-    if edit_event is None:
+    event = db.event[id]
+    if event.created_by != auth.user_id: raise HTTP(400)
+    if event is None:
         redirect(URL('index'))
-    form = Form(db.event, record=edit_event, deletable=False, csrf_session=session, formstyle=FormStyleBulma)
+    form = Form(db.event, record=event, deletable=False, csrf_session=session, formstyle=FormStyleBulma)
     if form.accepted:
         redirect(URL('view_event', id))
     return dict(form=form)
@@ -39,8 +39,9 @@ def edit_event(id=None):
 @action.uses('view_event.html', db, session, auth.user)
 def view_event(id=None):
     assert id is not None
-    edit_event = db.event[id]
-    if edit_event is None:
+    event = db.event[id]
+    if event.created_by != auth.user_id: raise HTTP(400)
+    if event is None:
         redirect(URL('index'))
     rows = db(db.event.id == id).select()
     return dict(events=rows)
@@ -49,8 +50,9 @@ def view_event(id=None):
 @action.uses(db, session, auth.user)
 def delete_event(id=None):
     assert id is not None
-    event_id = db.event[id]
-    if event_id is None:
+    event = db.event[id]
+    if event.created_by != auth.user_id: raise HTTP(400)
+    if event is None:
         redirect(URL('index'))
     db(db.event.id == id).delete()
     redirect(URL('index'))
@@ -70,8 +72,7 @@ def get_events():
     username = auth.get_user()['id']
     text = request.GET.get("text", "")
     events = db((db.event.name.contains(text)) & (db.event.created_by == username)).select()
-    categories = db(db.category).select()
-    return dict(events=events, categories=categories)
+    return dict(events=events)
 
 @action("search_users/<id:int>", method=["GET"])
 @action.uses('search_users.html', db, session, auth.user)
@@ -87,72 +88,6 @@ def get_users():
     text = request.GET.get("text", "")
     users = db((db.auth_user.username.contains(text) & (db.auth_user.id != auth.get_user()['id']))).select()
     return dict(users=users)
-
-### category ###
-@action("create_category", method=["GET", "POST"])
-@action.uses("create_category.html", db, session, auth.user)
-def create_category():
-    form = Form(db.category, fields=['category_name', 'color'], csrf_session=session, formstyle=FormStyleBulma)
-    cat = request.params.get('cat_name')
-    colors = request.params.get('color')
-
-    db.category.insert(color=colors, category_name=cat)
-    events = db(db.event).select()
-    category = db(db.category).select()
-    print("redirecting to", URL("index"))
-    if form.accepted:
-        redirect(URL('index'))
-    return dict(form=form, events=events, category=category)
-
-
-@action('edit_category/<id:int>', method=["GET", "POST"])
-@action.uses('edit_category.html', db.category, db, session, auth.user)
-def edit_category(id=None):
-    assert id is not None
-    edit_category = db.category[id]
-    if edit_category is None:
-        redirect(URL('index'))
-    form = Form(db.event.category_id, db.category, fields=['category_name', 'category_description', 'color'], record=edit_category, deletable=False, csrf_session=session, formstyle=FormStyleBulma)
-    if form.accepted:
-        redirect(URL('view_category', id))
-    return dict(form=form)
-# currently not being used.
-#@action('view_category/<id:int>', method=["GET", "POST"])
-#@action.uses('view_category.html',db , session, auth.user)
-#def view_category(id=None):
-#    assert id is not None
-#    view_category = db.category[id]
-#    if view_category is None:
-#        redirect(URL('index'))
-#    rows = db(db.category.id == id).select()
-#    return dict(category=rows)
-
-
-#@action('delete_category/<id:int>')
-#@action.uses(db, session, auth.user)
-#def delete_category(id=None):
-#    assert id is not None
-#    category_id = db.category[id]
-#    if category_id is None:
-#        redirect(URL('index'))
-#    db(db.category.id == id).delete()
-#    redirect(URL('index'))
-
-
-@action('apply_category', method=["POST", "GET"])
-@action.uses('create_category.html', db, session, auth.user)
-def apply_category():
-    event_id = request.params.get('event_id')
-    category_id = request.params.get('category_id')
-
-    event = db(db.event.id == event_id).select()
-    category = db(db.category.id == category_id).select()
-
-    if event and category:
-        return dict(events=event, category=category)
-    redirect(URL('index'))
-
-
 
 @action('invite_user/<event_id>/<recipient_username>', method=["GET","POST"])
 @action.uses(db, auth.user)
