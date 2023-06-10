@@ -288,4 +288,10 @@ def accept_invitation(invitation_id):
     invitation_set.delete()
     redirect(URL('get_invitations'))
 
-      
+@action('decline_invitation/<invitation_id>', method=["GET", "DELETE"])
+@action.uses(db, session, auth.user)
+def decline_invitation(invitation_id):
+    # delete the invitation
+    invitation_set = db(db.invitations.id==invitation_id)
+    invitation_set.delete()
+    redirect(URL('get_invitations'))
