@@ -119,7 +119,6 @@ def search_users(id=None):
     text = request.GET.get("text", "")
     users = db(db.auth_user.username.contains(text)).select()
     # now get invitations
-    #invitations = db(db.invitations.)
     return dict(users=users, event_id=id)
 
 @action("get_users", method=["GET"])

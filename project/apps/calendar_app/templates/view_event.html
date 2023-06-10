@@ -1,22 +1,25 @@
 [[extend 'layout.html']]
 
 <div class="section">
+    <div class="block">
+        <a class="button is-info" href="[[=URL('index')]]">
+            <span>Back</span>
+        </a>
+    </div>
     [[for event in events:]]
     <div class="block">
-    <h1 class="title">Event Name</h1>
-        <div>[[=event.name]]</div>
+        <h1 class="title">[[=event.name]]</h1>
     </div>
     <div class="block">
-    <h1 class="title">Time</h1>
+    <h1 class="title is-4">Time</h1>
         <div>[[=event.event_time]]</div>
     </div>
-    <!-- [[ pass ]] -->
     <div class="block">
-    <h1 class="title">Event Description</h1>
+    <h1 class="title is-4">Event Description</h1>
     <div>[[=event.description]]</div>
     </div>
     <div class="block">
-        <h1 class="title">Event Venue</h1>
+        <h1 class="title is-4">Event Venue</h1>
         <div>[[=event.venue]]</div>
     </div>
     [[if event.venue:]]
@@ -30,11 +33,8 @@
     <a class="button is-danger" href="[[=URL('delete_event', event.id)]]">
         <span>Delete This Event</span>
     </a>
-    <a class="button is-info" href="[[=URL('index')]]">
-        <span>Back</span>
-    </a>
     <a class="button is-success" href="[[=URL('search_users', event.id)]]">
-        <span>Invite User</span>
+        <span>Invite Users</span>
     </a>
     [[pass]]
 </div>
