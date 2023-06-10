@@ -1,5 +1,5 @@
-# CSE183-Calendar-Project
-Title: Events Calendar
+# CSE 183 Calendar Project
+Project Title: Event Calendar
 
 Class: CSE 183, Spring 2023
 
@@ -16,21 +16,28 @@ Sydney DeHaro | sdeharo@ucsc.edu
 Summit Kaushal | sukausha@ucsc.edu
 
 ## Description
-This app will display a calendar, with the ability to add events to each of its days. Its objective is to allow the user to more easily keep track of the dates and times of events in their life. It will include a login page, a month view page, a day’s events page, an event creation page, and an event details page. It will store user login information, user calendar data, and calendar event data. Users will be able to create an account, access their own calendar, view the scheduled events for the day/week/month, and look at their scheduled events in detail. They will also be able to create/update/delete event details as needed.
+
+This project implements an event calendar in which users can create, edit, and delete events that will show up on the selected calendar view on the main 
+index page. The user can select from daily, weekly, monthly (default view), and yearly views. Users will be able to create an account, access their own calendar, view the scheduled events for the day/week/month, and search for their scheduled events by name. They will also be able to create/update/delete event details as needed. Users can also send invites to other users which will allow the latter to copy events to their own calendar.
+
 
 ## Main Pages 
 - Login page
-- Day/week/month calendar views
-- Event creation page
-- Event details page (title, description, time, date)
+- Day/week/month/year calendar views
+- Event Creation
+- Event Edit
+- Event Search
+- Event Details (title, description, time, date)
+- Invite user to event
+- View personal event invitations
 
 All pages will be implemented server-side
 
 ## Data Organization (databases) 
 
 - User Login Info (email, username, password)
-- User Calendar Data (days, weeks, months)
 - User Individual Events and Event Data (title, description, time, date)
+- User event invitations (sender, recipient, event id)
 
 ## User Stories
 A user can:
@@ -38,22 +45,21 @@ A user can:
 - create an account to keep track of one’s own personal calendar
 - create an event with its own unique associated time/date/description
 - update event details and delete events as needed
-- view personal calendar with a day view, week view, or month view
+- view personal calendar with a day, week, month, or year view
 - click on an event to see its associated title/description/time/date
+- send invites to personal events to other users
+- accept or decline invites to share an event
 
 ## Implementation Plan
 
-<b>Weeks 1-2
+<b>Weeks 1-2</b>
 
-Get individual user pages setup, w/ ability to login, view personal monthly calendar page
-provide demonstrable website functionality
+Get individual user pages setup, w/ ability to login, view personal monthly calendar page, provide demonstrable website functionality
 
-<b>Weeks 3-4
+<b>Weeks 3-4</b>
 
-Weekly and daily views, individual events, user interface improvements
-event functionality
+Weekly and daily views, individual events, user interface improvements, event functionality
 
-<b>Weeks 5-6
+<b>Weeks 5-6</b>
 
-Implement additional features (TBD)
-
+Implement additional features such as user invites to allow users to share events
